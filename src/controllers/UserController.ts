@@ -1,17 +1,27 @@
 import User from "../models/User";
+import { validationResult } from "express-validator";
 
 export class UserController {
-  static login(req, res, next) {
-    const email = req.body.email;
-    const password = req.body.password;
-    const user = new User({ email, password });
+  static signUp(req, res, next) {
+    const result = validationResult(req);
+    const { email, password, username } = req.body;
+
+    const hasError = !result.isEmpty();
+    if (hasError) {
+      const newError = result.array()[0].msg;
+      next(new Error(newError));
+      return;
+    }
+
+    const data = { email, password, username };
+    const user = new User(data);
     user
       .save()
       .then((user) => {
         res.send(user);
       })
-      .catch((error) => {
-        next(error);
+      .catch((err) => {
+        next(err);
       });
   }
 }
