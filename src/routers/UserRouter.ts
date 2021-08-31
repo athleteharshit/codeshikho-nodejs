@@ -14,18 +14,24 @@ class UserRouter {
     this.deleteRoute();
   }
 
-  getRoutes() {}
+  getRoutes() {
+    this.router.get(
+      "/send/verification/email",
+      UserValidators.resendVerificationEmail(),
+      GlobalMiddleware.checkError,
+      UserController.resendVerificationEmail
+    );
+  }
   postRoutes() {
     this.router.post(
       "/signUp",
-      UserValidators.signUp(),
       GlobalMiddleware.checkError,
       UserController.signUp
     );
   }
   patchRoutes() {
     this.router.patch(
-      "/verifyUser",
+      "/verify",
       UserValidators.verify(),
       GlobalMiddleware.checkError,
       UserController.verify
