@@ -23,4 +23,11 @@ export class UserValidators {
       body("username", "username is required!").isString(),
     ];
   }
+
+  static verify() {
+    return [
+      body("verification_token", "verification token is required!").isNumeric(),
+      body("email", "email is required!").isEmail(),
+    ];
+  }
 }
